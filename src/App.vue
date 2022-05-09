@@ -19,7 +19,7 @@
                 <h5 v-else>{{movie.name}}</h5>
               <h6 v-if="movie.original_title">{{movie.original_title}}</h6>
                 <h6 v-else>{{movie.original_name}}</h6>
-              <p>{{movie.original_language}}</p>
+              <lang-flag :iso="movie.original_language" />
               <p>{{movie.vote_average}}</p>
             </div>
           </div>
@@ -81,6 +81,7 @@ export default {
         this.error = "Loading..."
       });
 
+    
     }
   },
 }
@@ -100,8 +101,11 @@ export default {
 .card{
   height: 450px;
 }
+.card-body{
+  lang-flag{width: 32px; height: 24px; border: 1px solid gray;}
+}
 img{
   width: 100%;
-  height: 300px;
+  height: 350px;
 }
 </style>
