@@ -34,7 +34,8 @@
           <div class="flip-card">
             <div class="my-card flip-card-inner">
                 <div class="flip-card-front">
-                  <img :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
+                  <img v-if="movie.poster_path" :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
+                  <h2 v-else>Missing image</h2>
                 </div>
               <div class="back flip-card-back p-4">
 
@@ -184,8 +185,14 @@ header{
       }
       svg.icon{margin: 0 2px !important;}
     }
-    .title h5{}
-    .original_title h5{}
+    h2{
+      background-color: $dark;
+      color: $danger;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .lang {font-size: 15px;}
     .overview p{font-size: 12px;}
 }
