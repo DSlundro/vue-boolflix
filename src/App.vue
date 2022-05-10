@@ -13,14 +13,19 @@
         <div class="col m-auto pt-5" v-for="movie in all" :key="movie.id">
           <div class="card">
             <img class="card-img-top" 
-            :src="`https://image.tmdb.org/t/p/w300${movie.poster_path}`" alt="Card image cap">
+            :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
             <div class="card-body">
               <h5 v-if="movie.title">{{movie.title}}</h5>
                 <h5 v-else>{{movie.name}}</h5>
               <h6 v-if="movie.original_title">{{movie.original_title}}</h6>
                 <h6 v-else>{{movie.original_name}}</h6>
-              <lang-flag :iso="movie.original_language" />
-              <p>{{movie.vote_average}}</p>
+              <lang-flag :iso="movie.original_language"/>
+
+              <div class="d-flex justify-content-center align-items-center">
+                  <div class=""> {{movie.vote_average}}</div>
+                  <rate :length="5" :value="starRating(movie.vote_average)" :readonly="true" class="p-0 m-0"></rate>
+              </div>
+
             </div>
           </div>
         </div>
@@ -34,6 +39,7 @@
 
 //import axios
 import axios from 'axios';
+
 
 export default {
   name: 'App',
@@ -80,11 +86,14 @@ export default {
         error;
         this.error = "Loading..."
       });
-
+    },
     
-    }
-  },
-}
+    starRating(rating){
+            return Math.round(Number(rating) / 2)
+        },
+
+    },
+  }
 </script>
 
 <style lang="scss">
@@ -107,5 +116,12 @@ export default {
 img{
   width: 100%;
   height: 350px;
+}
+
+.Rate{
+  button{
+    margin: 0 !important;padding: 0 !important;
+  }
+  svg.icon{margin: 0 2px !important;}
 }
 </style>
