@@ -12,7 +12,7 @@
       <div class="row row-cols-5">
         <div class="col pt-5" v-for="movie in all" :key="movie.id">
           <div class="card">
-            <img class="card-img-top" 
+            <img class="card-img-top"  
             :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
             <div class="card-body">
 
@@ -23,11 +23,9 @@
                 <h5 v-else>{{movie.name}}</h5>
               </div>
               
-              <div class="original_title
-              
-              ">
-                <h6 v-if="movie.original_title">{{movie.original_title}}</h6>
-                <h6 v-else>{{movie.original_name}}</h6>
+              <div class="original_title">
+                <h6 v-if="movie.original_title && movie.original_title != movie.title">{{movie.original_title}}</h6>
+                <h6 v-if="movie.original_name && movie.original_name != movie.name">{{movie.original_name}}</h6>
               </div>
 
               <div class="lang 
@@ -135,7 +133,7 @@ img{
 
 .Rate{
   button{
-    margin: 0 !important;padding: 0 !important;
+    margin: 0 !important;padding: 0 !important; cursor: initial !important;
   }
   svg.icon{margin: 0 2px !important;}
 }
