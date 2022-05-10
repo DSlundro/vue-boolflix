@@ -36,28 +36,32 @@
                 <div class="flip-card-front">
                   <img :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
                 </div>
-              <div class="back flip-card-back">
+              <div class="back flip-card-back p-4">
 
-                  <div class="title">
-                  <h5 v-if="movie.title">Titolo: {{movie.title}}</h5>
-                  <h5 v-else>Titolo: {{movie.name}}</h5>
+                  <div class="title fs-5">
+                  <h6 v-if="movie.title"><b>Titolo:</b> {{movie.title}}</h6>
+                  <h6 v-else><b>Titolo:</b> {{movie.name}}</h6>
                 </div>
                 
                 <div class="original_title">
-                  <h6 v-if="movie.original_title && movie.original_title != movie.title">Titolo originale: {{movie.original_title}}</h6>
-                  <h6 v-if="movie.original_name && movie.original_name != movie.name">Titolo originale{{movie.original_name}}</h6>
+                  <h6 v-if="movie.original_title && movie.original_title != movie.title"><b>Titolo originale:</b> {{movie.original_title}}</h6>
+                  <h6 v-if="movie.original_name && movie.original_name != movie.name"><b>Titolo originale:</b> {{movie.original_name}}</h6>
                 </div>
 
                 <div class="lang d-flex">
-                  <div class="pe-2">Lingua originale:
+                  <div class="pe-2"><b>Lingua originale:</b>
                   </div><lang-flag :iso="movie.original_language"/>
                 </div>
 
                 <div class="rating d-flex align-items-center">
-                    <div class="pe-2 pt-1">Voto: {{movie.vote_average}}</div>
+                    <div class="pe-2 pt-1"><b>Voto:</b> {{movie.vote_average}}</div>
                     <rate :length="5" :value="starRating(movie.vote_average)" :readonly="true"></rate>
                 </div>
 
+                <div class="overview pt-1">
+                  <p v-if="movie.overview">{{movie.overview}}</p>
+                  <p v-else>Descrizione mancante!</p>
+                </div>
 
               </div>
             </div>
@@ -180,6 +184,10 @@ header{
       }
       svg.icon{margin: 0 2px !important;}
     }
+    .title h5{}
+    .original_title h5{}
+    .lang {font-size: 15px;}
+    .overview p{font-size: 12px;}
 }
 
 .flip-card {
