@@ -27,40 +27,42 @@
       </div>
     </header>
 
-    <div class="container">
+    <div class="container mt-4">
       <div class="row row-cols-5">
         <div class="col pt-5" v-for="movie in all" :key="movie.id">
-          <div class="card">
-            <img class="card-img-top"  
-            :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
-            <div class="card-body">
+          
+          <div class="flip-card">
+            <div class="my-card flip-card-inner">
+                <div class="flip-card-front">
+                  <img :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
+                </div>
+              <div class="back flip-card-back">
 
-              <div class="title
-              
-              ">
-                <h5 v-if="movie.title">{{movie.title}}</h5>
-                <h5 v-else>{{movie.name}}</h5>
-              </div>
-              
-              <div class="original_title">
-                <h6 v-if="movie.original_title && movie.original_title != movie.title">{{movie.original_title}}</h6>
-                <h6 v-if="movie.original_name && movie.original_name != movie.name">{{movie.original_name}}</h6>
-              </div>
+                  <div class="title">
+                  <h5 v-if="movie.title">Titolo: {{movie.title}}</h5>
+                  <h5 v-else>Titolo: {{movie.name}}</h5>
+                </div>
+                
+                <div class="original_title">
+                  <h6 v-if="movie.original_title && movie.original_title != movie.title">Titolo originale: {{movie.original_title}}</h6>
+                  <h6 v-if="movie.original_name && movie.original_name != movie.name">Titolo originale{{movie.original_name}}</h6>
+                </div>
 
-              <div class="lang 
-              d-flex">
-                <div class="pe-2">Language:
-                </div><lang-flag :iso="movie.original_language"/>
-              </div>
+                <div class="lang d-flex">
+                  <div class="pe-2">Lingua originale:
+                  </div><lang-flag :iso="movie.original_language"/>
+                </div>
 
-              <div class="rating
-              d-flex align-items-center">
-                  <div class="pe-2 pt-1">Vote: {{movie.vote_average}}</div>
-                  <rate :length="5" :value="starRating(movie.vote_average)" :readonly="true"></rate>
-              </div>
+                <div class="rating d-flex align-items-center">
+                    <div class="pe-2 pt-1">Voto: {{movie.vote_average}}</div>
+                    <rate :length="5" :value="starRating(movie.vote_average)" :readonly="true"></rate>
+                </div>
 
+
+              </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -131,6 +133,13 @@ export default {
 
 <style lang="scss">
 @import '@/assets/scss/style.scss';
+body{
+  background-image: url(@/assets/img/bg.jpg);
+  background-color: black;
+  background-position: center -200px;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
 #app {
   padding: 0;margin: 0;box-sizing: border-box;
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -156,9 +165,9 @@ header{
   }
 }
 
-.card{
-  height: 450px;
-    .card-body{
+.my-card{
+    cursor: pointer;
+    .back{
       lang-flag{width: 32px; height: 24px; border: 1px solid gray;}
     }
     img{
@@ -173,4 +182,36 @@ header{
     }
 }
 
+.flip-card {
+  background-color: transparent;
+  height: 350px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-back {
+  background-color: $dark;
+  color: white;
+  transform: rotateY(180deg);
+  overflow-y: auto;
+}
 </style>
