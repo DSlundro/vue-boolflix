@@ -10,20 +10,36 @@
             </div>
         </div>
       <div class="row row-cols-5">
-        <div class="col m-auto pt-5" v-for="movie in all" :key="movie.id">
+        <div class="col pt-5" v-for="movie in all" :key="movie.id">
           <div class="card">
             <img class="card-img-top" 
             :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
             <div class="card-body">
-              <h5 v-if="movie.title">{{movie.title}}</h5>
-                <h5 v-else>{{movie.name}}</h5>
-              <h6 v-if="movie.original_title">{{movie.original_title}}</h6>
-                <h6 v-else>{{movie.original_name}}</h6>
-              <lang-flag :iso="movie.original_language"/>
 
-              <div class="d-flex justify-content-center align-items-center">
-                  <div class=""> {{movie.vote_average}}</div>
-                  <rate :length="5" :value="starRating(movie.vote_average)" :readonly="true" class="p-0 m-0"></rate>
+              <div class="title
+              
+              ">
+                <h5 v-if="movie.title">{{movie.title}}</h5>
+                <h5 v-else>{{movie.name}}</h5>
+              </div>
+              
+              <div class="original_title
+              
+              ">
+                <h6 v-if="movie.original_title">{{movie.original_title}}</h6>
+                <h6 v-else>{{movie.original_name}}</h6>
+              </div>
+
+              <div class="lang 
+              d-flex">
+                <div class="pe-2">Language:
+                </div><lang-flag :iso="movie.original_language"/>
+              </div>
+
+              <div class="rating
+              d-flex align-items-center">
+                  <div class="pe-2 pt-1">Vote: {{movie.vote_average}}</div>
+                  <rate :length="5" :value="starRating(movie.vote_average)" :readonly="true"></rate>
               </div>
 
             </div>
@@ -103,7 +119,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 
