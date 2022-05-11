@@ -116,6 +116,8 @@ export default {
         this.movies = response.data.results;
         this.all = response.data.results;
         this.loading = false;
+        
+        console.log('Film array')
         console.log(this.movies)
 
       return this.movies.forEach((movie) => {
@@ -123,6 +125,8 @@ export default {
         .get('https://api.themoviedb.org/3/movie/'+ movie.id +'/credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT')
         .then((response) => {
           this.moviesCast.push(response.data.cast.slice(0, 5));
+
+          console.log('Film actors array')
           console.log(this.moviesCast)
         })
       })
@@ -136,13 +140,23 @@ export default {
         this.all = [...this.all, ...response.data.results]
         this.loading = false;
 
+        console.log('Serie array');
+        console.log(this.series)
+        console.log('Film + Serie array');
+        console.log(this.all)
+
 
       return this.series.forEach((serie) => {
         axios
         .get('https://api.themoviedb.org/3/tv/'+ serie.id +'/credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT')
         .then((response) => {
           this.seriesCast.push(response.data.cast.slice(0, 5));
-          this.allCast = [...this.allCast, ...response.data.cast]
+          this.allCast = [...this.moviesCast, ...this.seriesCast]
+
+          console.log('Serie actor array');
+          console.log(this.seriesCast)
+          console.log('Film + Serie actor array');
+          console.log(this.allCast)
 
         })
       })
