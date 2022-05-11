@@ -10,9 +10,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 img{
-        width: 150px;
-        height: auto;
+    width: 150px;
+    height: auto;
     }
 </style>

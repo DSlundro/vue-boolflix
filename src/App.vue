@@ -4,16 +4,7 @@
     <header>
         <div class="row align-items-center m-0 p-3 bg-dark">
             <LogoHeader />
-            <div class="col-6 d-flex">
-              <ul class="d-flex align-items-center gap-3 m-0">
-                  <li><a href="#">Home</a></li>
-                  <li><a href="#">Serie TV</a></li>
-                  <li><a href="#">Film</a></li>
-                  <li><a href="#">Original</a></li>
-                  <li><a href="#">Last added</a></li>
-                  <li><a href="#">Favourite</a></li>
-              </ul>
-            </div>
+            <MenuHeader />
             <div class="col-4">
             <div class="d-flex justify-content-end align-items-center p-fixed">
                     <div class="input-group w-75">
@@ -86,11 +77,13 @@
 //import axios
 import axios from 'axios';
 import LogoHeader from '@/components/partials/LogoHeader.vue'
+import MenuHeader from '@/components/partials/MenuHeader.vue'
 
 export default {
   name: 'App',
   components: {
-    LogoHeader
+    LogoHeader,
+    MenuHeader,
   },
   data(){
     return{
@@ -194,19 +187,6 @@ body{
   color: #2c3e50;
 }
 
-header{
-    
-    ul{
-        list-style: none;
-        li{
-        a{
-            color: $danger;
-            text-decoration: none;
-            &:hover{color: $light;}
-        }
-        }
-    }
-}
 
 .my-card{
     cursor: pointer;
