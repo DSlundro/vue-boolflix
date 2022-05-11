@@ -2,29 +2,29 @@
   <div id="app">
 
     <header>
-      <div class="row align-items-center m-0 p-3 bg-dark">
-        <div class="col-2">
-          <img src="@/assets/img/logo.png" alt="">
-        </div>
-        <div class="col-6 d-flex">
-          <ul class="d-flex align-items-center gap-3 m-0">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Serie TV</a></li>
-            <li><a href="#">Film</a></li>
-            <li><a href="#">Original</a></li>
-            <li><a href="#">Last added</a></li>
-            <li><a href="#">Favourite</a></li>
-          </ul>
-        </div>
-        <div class="col-4">
-          <div class="d-flex justify-content-end align-items-center p-fixed">
-                <div class="input-group w-75">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" v-model="query" @keyup.enter="callApi"/>
-                    <button type="button" class="btn btn-danger" @click="callApi">Search</button>
+        <div class="row align-items-center m-0 p-3 bg-dark">
+            <div class="col-2">
+            <img src="@/assets/img/logo.png" alt="">
+            </div>
+            <div class="col-6 d-flex">
+            <ul class="d-flex align-items-center gap-3 m-0">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Serie TV</a></li>
+                <li><a href="#">Film</a></li>
+                <li><a href="#">Original</a></li>
+                <li><a href="#">Last added</a></li>
+                <li><a href="#">Favourite</a></li>
+            </ul>
+            </div>
+            <div class="col-4">
+            <div class="d-flex justify-content-end align-items-center p-fixed">
+                    <div class="input-group w-75">
+                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" v-model="query" @keyup.enter="callApi"/>
+                        <button type="button" class="btn btn-danger" @click="callApi">Search</button>
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
     </header>
 
     <div class="container mt-4">
@@ -59,8 +59,17 @@
                     <rate :length="5" :value="starRating(movie.vote_average)" :readonly="true"></rate>
                 </div>
 
+                <div class="cast py-1">
+                  <div class="d-flex flex-wrap">
+                    <h6 class="m-0 p-0 pe-1"><b>Cast: </b></h6>
+                    <div class="person movies_cast pe-1" v-for="cast in allCast" :key="cast.id">
+                    {{cast.name}},
+                    </div>
+                  </div>
+                </div>
+
                 <div class="overview pt-1">
-                  <p v-if="movie.overview">{{movie.overview}}</p>
+                  <p v-if="movie.overview"><b class="fs-6 pe-1">Overview:</b>{{movie.overview}}</p>
                   <p v-else>Descrizione mancante!</p>
                 </div>
 
@@ -75,24 +84,26 @@
 </template>
 
 <script>
-//import SearchBar from '@/components/SearchBar.vue'
 
 //import axios
 import axios from 'axios';
 
-
 export default {
   name: 'App',
   components: {
-  //  SearchBar,
   },
   data(){
     return{
-      api_movies: `https://api.themoviedb.org/3/search/movie?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT&page=1&include_adult=false&query=`,
-      api_series: `https://api.themoviedb.org/3/search/tv?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT&page=1&include_adult=false&query=`,
+      apiMovies: `https://api.themoviedb.org/3/search/movie?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT&page=1&include_adult=false&query=`,
+      apiSeries: `https://api.themoviedb.org/3/search/tv?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT&page=1&include_adult=false&query=`,
+      apiMoviesCast: 'https://api.themoviedb.org/3/movie/ ... /credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT',
+      apiSeriesCast: 'https://api.themoviedb.org/3/tv/ ... /credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT',
       movies: [],
       series: [],
+      moviesCast: [],
+      seriesCast: [],
       all: [],
+      allCast: [],
       loading: true,
       query: '',
     }
@@ -100,34 +111,45 @@ export default {
   methods:{
     callApi(){
       axios
-      .get(`${this.api_movies}${this.query}`)
+      .get(`${this.apiMovies}${this.query}`)
       .then((response) => {
         this.movies = response.data.results;
         this.all = response.data.results;
         this.loading = false;
         console.log(this.movies)
+
+      return this.movies.forEach((movie) => {
+        axios
+        .get('https://api.themoviedb.org/3/movie/'+ movie.id +'/credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT')
+        .then((response) => {
+          this.moviesCast.push(response.data.cast.slice(0, 5));
+          console.log(this.moviesCast)
+        })
       })
-      .catch(error => {
-        console.error(error);
-        error;
-        this.error = "Loading..."
-      });
+    });
+
 
       axios
-      .get(`${this.api_series}${this.query}`)
+      .get(`${this.apiSeries}${this.query}`)
       .then((response) => {
         this.series = response.data.results;
         this.all = [...this.all, ...response.data.results]
         this.loading = false;
-        console.log(this.series)
+
+
+      return this.series.forEach((serie) => {
+        axios
+        .get('https://api.themoviedb.org/3/tv/'+ serie.id +'/credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT')
+        .then((response) => {
+          this.seriesCast.push(response.data.cast.slice(0, 5));
+          this.allCast = [...this.allCast, ...response.data.cast]
+
+        })
       })
-      .catch(error => {
-        console.error(error);
-        error;
-        this.error = "Loading..."
-      });
+
+      })
     },
-    
+
     starRating(rating){
             return Math.round(Number(rating) / 2)
         },
@@ -138,6 +160,10 @@ export default {
 
 <style lang="scss">
 @import '@/assets/scss/style.scss';
+
+*::-webkit-scrollbar{width: 2px;}
+*::-webkit-scrollbar-track{background-color: black;}
+
 body{
   background-image: url(@/assets/img/bg.jpg);
   background-color: black;
@@ -154,20 +180,20 @@ body{
 }
 
 header{
-  img{
-    width: 150px;
-    height: auto;
-  }
-  ul{
-    list-style: none;
-    li{
-      a{
-        color: $danger;
-        text-decoration: none;
-        &:hover{color: $light;}
-      }
-      }
-  }
+    img{
+        width: 150px;
+        height: auto;
+    }
+    ul{
+        list-style: none;
+        li{
+        a{
+            color: $danger;
+            text-decoration: none;
+            &:hover{color: $light;}
+        }
+        }
+    }
 }
 
 .my-card{
@@ -194,7 +220,10 @@ header{
       align-items: center;
     }
     .lang {font-size: 15px;}
-    .overview p{font-size: 12px;}
+    .overview p{font-size: 12px; text-align: justify;}
+    .cast .person{
+      font-size: 12px;
+    }
 }
 
 .flip-card {
