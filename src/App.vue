@@ -6,12 +6,12 @@
             <LogoHeader />
             <MenuHeader />
             <div class="col-4">
-            <div class="d-flex justify-content-end align-items-center p-fixed">
-                    <div class="input-group w-75">
-                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" v-model="query" @keyup.enter="callApi"/>
-                        <button type="button" class="btn btn-danger" @click="callApi">Search</button>
-                    </div>
-                </div>
+              <div class="d-flex justify-content-end align-items-center p-fixed">
+                  <div class="input-group w-75">
+                      <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" v-model="query" @keyup.enter="callApi"/>
+                      <button type="button" class="btn btn-danger" @click="callApi">Search</button>
+                  </div>
+              </div>
             </div>
         </div>
     </header>
@@ -26,7 +26,7 @@
                   <img v-if="movie.poster_path" :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
                   <h2 v-else>Missing image</h2>
                 </div>
-              <div class="back flip-card-back p-4">
+              <div class="back flip-card-back p-4 bg-dark">
 
                   <div class="title fs-5">
                   <h6 v-if="movie.title"><b>Titolo:</b> {{movie.title}}</h6>
@@ -99,7 +99,6 @@ export default {
       allCast: [],
       loading: true,
       query: '',
-      movie: [],
     }
   },
   methods:{
@@ -169,8 +168,7 @@ export default {
 <style lang="scss">
 @import '@/assets/scss/style.scss';
 
-*::-webkit-scrollbar{width: 2px;}
-*::-webkit-scrollbar-track{background-color: black;}
+*::-webkit-scrollbar{width: 1px;}
 
 body{
   background-image: url(@/assets/img/bg.jpg);
@@ -240,12 +238,10 @@ body{
   position: absolute;
   width: 100%;
   height: 100%;
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
 .flip-card-back {
-  background-color: $dark;
   color: white;
   transform: rotateY(180deg);
   overflow-y: auto;

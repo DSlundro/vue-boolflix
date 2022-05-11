@@ -22,9 +22,9 @@ ul{
     list-style: none;
     li{
         a{
-            color: red;
+            color: $danger;
             text-decoration: none;
-            &:hover{color: white;}
+            &:hover{color: $light;}
         }
     }
 }
