@@ -3,87 +3,44 @@
 
     <header>
         <div class="row align-items-center m-0 p-3 bg-dark">
-            <LogoHeader />
-            <MenuHeader />
-            <div class="col-4">
-              <div class="d-flex justify-content-end align-items-center p-fixed">
-                  <div class="input-group w-75">
-                      <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" v-model="query" @keyup.enter="callApi"/>
-                      <button type="button" class="btn btn-danger" @click="callApi">Search</button>
-                  </div>
-              </div>
+          <LogoHeader />
+          <MenuHeader />
+        <div class="col-4">
+          <div class="d-flex justify-content-end align-items-center p-fixed">
+            <div class="input-group w-75">
+              <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" v-model="query" @keyup.enter="callApi"/>
+              <button type="button" class="btn btn-danger" @click="callApi">Search</button>
             </div>
+          </div>
+        </div>
         </div>
     </header>
 
     <div class="container mt-4">
       <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-        <div class="col pt-5" v-for="movie in all" :key="movie.id">
-          
-          <div class="flip-card">
-            <div class="my-card flip-card-inner">
-                <div class="flip-card-front">
-                  <img v-if="movie.poster_path" :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
-                  <h2 v-else>Missing image</h2>
-                </div>
-              <div class="back flip-card-back p-4 bg-dark">
-
-                  <div class="title fs-5">
-                  <h6 v-if="movie.title"><b>Titolo:</b> {{movie.title}}</h6>
-                  <h6 v-else><b>Titolo:</b> {{movie.name}}</h6>
-                </div>
-                
-                <div class="original_title">
-                  <h6 v-if="movie.original_title && movie.original_title != movie.title"><b>Titolo originale:</b> {{movie.original_title}}</h6>
-                  <h6 v-if="movie.original_name && movie.original_name != movie.name"><b>Titolo originale:</b> {{movie.original_name}}</h6>
-                </div>
-
-                <div class="lang d-flex">
-                  <div class="pe-2"><b>Lingua originale:</b>
-                  </div><lang-flag :iso="movie.original_language"/>
-                </div>
-
-                <div class="rating d-flex align-items-center">
-                    <div class="pe-2 pt-1"><b>Voto:</b> {{movie.vote_average}}</div>
-                    <rate :length="5" :value="starRating(movie.vote_average)" :readonly="true"></rate>
-                </div>
-
-                <div class="cast py-1">
-                  <div class="d-flex flex-wrap">
-                    <h6 class="m-0 p-0 pe-1"><b>Cast: </b></h6>
-                    <div class="person movies_cast pe-1" v-for="actor in movie.cast" :key="actor.id">
-                    {{actor.name}},
-                    </div>
-                  </div>
-                </div>
-
-                <div class="overview pt-1">
-                  <p v-if="movie.overview"><b class="fs-6 pe-1">Overview:</b>{{movie.overview}}</p>
-                  <p v-else>Descrizione mancante!</p>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-        </div>
+        <!-- <select class="form-select" aria-label="Default select example">
+          <option value="">Seleziona un genere</option>
+          <option :value="gen.name" v-for="gen in genre" :key="gen.id">{{gen.name}}</option>
+        </select> -->
+        <CardMain :movie="movie" v-for="movie in all" :key="movie.id"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
-//import axios
 import axios from 'axios';
+
 import LogoHeader from '@/components/partials/LogoHeader.vue'
 import MenuHeader from '@/components/partials/MenuHeader.vue'
+import CardMain from '@/components/partials/CardMain.vue'
 
 export default {
   name: 'App',
   components: {
     LogoHeader,
     MenuHeader,
+    CardMain,
   },
   data(){
     return{
@@ -91,15 +48,26 @@ export default {
       apiSeries: `https://api.themoviedb.org/3/search/tv?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT&page=1&include_adult=false&query=`,
       apiMoviesCast: 'https://api.themoviedb.org/3/movie/ ... /credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT',
       apiSeriesCast: 'https://api.themoviedb.org/3/tv/ ... /credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT',
+      apiMoviesGenre: `https://api.themoviedb.org/3/genre/movie/list?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT`,
+      apiSeriesGenre: `https://api.themoviedb.org/3/genre/tv/list?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT`,
       movies: [],
       series: [],
       all: [],
       loading: true,
       query: '',
+      genre: [],
     }
   },
   methods:{
+    callGenre(){
+      axios
+            .get(this.apiMoviesGenre)
+            .then((response) => {
+              this.genre.push(response.data.genres)
+            })
+    },
     callApi(){
+      // API MOVIES
       axios
       .get(`${this.apiMovies}${this.query}`)
       .then((response) => {
@@ -107,20 +75,27 @@ export default {
         this.all = response.data.results;
         this.loading = false;
         
-        console.log('Film array')
-        console.log(this.movies)
-
-      this.movies.forEach((movie) => {
-        axios
-        .get('https://api.themoviedb.org/3/movie/'+ movie.id +'/credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT')
-        .then((response) => {
-          this.$set(movie, 'cast', response.data.cast.slice(0, 5))
-          console.log('Film actors array')
+        // API MOVIES CAST
+        this.movies.forEach((movie) => {
+          axios
+          .get('https://api.themoviedb.org/3/movie/'+ movie.id +'/credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT')
+          .then((response) => {
+            this.$set(movie, 'cast', response.data.cast.slice(0, 5))
+          })
         })
-      })
+
+        // API MOVIES GENRES
+        this.movies.forEach((genre) => {
+          axios
+          .get('https://api.themoviedb.org/3/genre/movie/list?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT&id=' + genre.id)
+          .then((response) => {
+            this.$set(genre, 'genre', response.data.genres)
+          })
+        })
+
     });
 
-
+      // API SERIES
       axios
       .get(`${this.apiSeries}${this.query}`)
       .then((response) => {
@@ -128,30 +103,18 @@ export default {
         this.all = [...this.movies, ...this.series]
         this.loading = false;
 
-        console.log('Serie array');
-        console.log(this.series)
-        console.log('Film + Serie array');
-        console.log(this.all)
-
-
-      this.series.forEach((serie) => {
-        axios
-        .get('https://api.themoviedb.org/3/tv/'+ serie.id +'/credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT')
-        .then((response) => {
-          this.$set(serie, 'cast', response.data.cast.slice(0, 5))
-
-          console.log('Serie actor array');
-          console.log(this.seriesCast)
-
+          // API SERIES CAST
+          this.series.forEach((serie) => {
+            axios
+            .get('https://api.themoviedb.org/3/tv/'+ serie.id +'/credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT')
+            .then((response) => {
+              this.$set(serie, 'cast', response.data.cast.slice(0, 5))
+            })
+          })
         })
-      })
+      },
 
-      })
-    },
-
-    starRating(rating){
-            return Math.round(Number(rating) / 2)
-        },
+    
 
     },
   }
@@ -159,83 +122,4 @@ export default {
 
 <style lang="scss">
 @import '@/assets/scss/style.scss';
-
-*::-webkit-scrollbar{width: 1px;}
-
-body{
-  background-image: url(@/assets/img/bg.jpg);
-  background-color: black;
-  background-position: center -200px;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-}
-#app {
-  padding: 0;margin: 0;box-sizing: border-box;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
-
-
-.my-card{
-    cursor: pointer;
-    .back{
-      lang-flag{width: 32px; height: 24px; border: 1px solid gray;}
-    }
-    img{
-      width: 100%;
-      height: 350px;
-    }
-    .Rate{
-      button{
-        margin: 0 !important;padding: 0 !important; cursor: initial !important;
-      }
-      svg.icon{margin: 0 2px !important;}
-    }
-    h2{
-      background-color: $dark;
-      color: $danger;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .lang {font-size: 15px;}
-    .overview p{font-size: 12px; text-align: justify;}
-    .cast .person{
-      font-size: 12px;
-    }
-}
-
-.flip-card {
-  background-color: transparent;
-  height: 350px;
-}
-
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-}
-
-.flip-card:hover .flip-card-inner {
-  transform: rotateY(180deg);
-}
-
-.flip-card-front, .flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-}
-
-.flip-card-back {
-  color: white;
-  transform: rotateY(180deg);
-  overflow-y: auto;
-}
 </style>
