@@ -3,18 +3,16 @@
 
     <header>
         <div class="row align-items-center m-0 p-3 bg-dark">
-            <div class="col-2">
-            <img src="@/assets/img/logo.png" alt="">
-            </div>
+            <LogoHeader />
             <div class="col-6 d-flex">
-            <ul class="d-flex align-items-center gap-3 m-0">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Serie TV</a></li>
-                <li><a href="#">Film</a></li>
-                <li><a href="#">Original</a></li>
-                <li><a href="#">Last added</a></li>
-                <li><a href="#">Favourite</a></li>
-            </ul>
+              <ul class="d-flex align-items-center gap-3 m-0">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">Serie TV</a></li>
+                  <li><a href="#">Film</a></li>
+                  <li><a href="#">Original</a></li>
+                  <li><a href="#">Last added</a></li>
+                  <li><a href="#">Favourite</a></li>
+              </ul>
             </div>
             <div class="col-4">
             <div class="d-flex justify-content-end align-items-center p-fixed">
@@ -87,10 +85,12 @@
 
 //import axios
 import axios from 'axios';
+import LogoHeader from '@/components/partials/LogoHeader.vue'
 
 export default {
   name: 'App',
   components: {
+    LogoHeader
   },
   data(){
     return{
@@ -106,6 +106,7 @@ export default {
       allCast: [],
       loading: true,
       query: '',
+      movie: [],
     }
   },
   methods:{
@@ -194,10 +195,7 @@ body{
 }
 
 header{
-    img{
-        width: 150px;
-        height: auto;
-    }
+    
     ul{
         list-style: none;
         li{
