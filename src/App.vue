@@ -51,8 +51,8 @@
                 <div class="cast py-1">
                   <div class="d-flex flex-wrap">
                     <h6 class="m-0 p-0 pe-1"><b>Cast: </b></h6>
-                    <div class="person movies_cast pe-1" v-for="cast in allCast" :key="cast.id">
-                    {{cast.name}},
+                    <div class="person movies_cast pe-1" v-for="actor in movie.cast" :key="actor.id">
+                    {{actor.name}},
                     </div>
                   </div>
                 </div>
@@ -93,10 +93,7 @@ export default {
       apiSeriesCast: 'https://api.themoviedb.org/3/tv/ ... /credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT',
       movies: [],
       series: [],
-      moviesCast: [],
-      seriesCast: [],
       all: [],
-      allCast: [],
       loading: true,
       query: '',
     }
@@ -113,14 +110,12 @@ export default {
         console.log('Film array')
         console.log(this.movies)
 
-      return this.movies.forEach((movie) => {
+      this.movies.forEach((movie) => {
         axios
         .get('https://api.themoviedb.org/3/movie/'+ movie.id +'/credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT')
         .then((response) => {
-          this.moviesCast.push(response.data.cast.slice(0, 5));
-
+          this.$set(movie, 'cast', response.data.cast.slice(0, 5))
           console.log('Film actors array')
-          console.log(this.moviesCast)
         })
       })
     });
@@ -139,17 +134,14 @@ export default {
         console.log(this.all)
 
 
-      return this.series.forEach((serie) => {
+      this.series.forEach((serie) => {
         axios
         .get('https://api.themoviedb.org/3/tv/'+ serie.id +'/credits?api_key=26c121a783f1c3835ab5cdc68c423a82&language=it-IT')
         .then((response) => {
-          this.seriesCast.push(response.data.cast.slice(0, 5));
-          this.allCast = [...this.moviesCast, ...this.seriesCast]
+          this.$set(serie, 'cast', response.data.cast.slice(0, 5))
 
           console.log('Serie actor array');
           console.log(this.seriesCast)
-          console.log('Film + Serie actor array');
-          console.log(this.allCast)
 
         })
       })
