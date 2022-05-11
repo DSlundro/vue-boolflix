@@ -137,7 +137,7 @@ export default {
       .get(`${this.apiSeries}${this.query}`)
       .then((response) => {
         this.series = response.data.results;
-        this.all = [...this.all, ...response.data.results]
+        this.all = [...this.movies, ...this.series]
         this.loading = false;
 
         console.log('Serie array');
