@@ -1,5 +1,5 @@
 <template>
-    <div class="row mx-1">
+    <div class="row m-0">
         <div class="img1 col-12">
             <div class="my_card">
                 <img :src="objects[activeImage].image" :alt="'Image' + [activeImage].title" >
@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <div class="img2 col-2" >
+        <div class="img2 col-2">
             <div class="thumbnails d-flex" @mouseenter="stop" @mouseleave="start"> 
                 <img :src="objects[index].image" class="thumb" :class="activeImage === index ? 'active' : '' " 
                 v-for="(image, index) in objects" :key="index" @click="activateImage(index)">
