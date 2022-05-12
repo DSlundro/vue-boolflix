@@ -7,7 +7,7 @@
                 <!-- FRONT CARD -->
                 <div class="flip-card-front">
                     <img v-if="movie.poster_path" :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
-                    <h2 v-else>Missing image</h2>
+                    <h2 v-else class="">Missing image</h2>
                 </div>
 
                 <!-- BACK CARD -->
@@ -40,10 +40,10 @@
                     <!-- ACTORS-->
                     <div class="cast py-1">
                         <div class="d-flex flex-wrap">
-                        <h6 class="m-0 p-0 pe-1"><b>Cast: </b></h6>
-                        <div class="person movies_cast pe-1" v-for="actor in movie.cast" :key="actor.id">
-                        {{actor.name}},
-                        </div>
+                            <h6 class="m-0 p-0 pe-1"><b>Cast: </b></h6>
+                            <div class="person movies_cast pe-1" v-for="actor in movie.cast" :key="actor.id">
+                            {{actor.name}},
+                            </div>
                         </div>
                     </div>
 
@@ -78,25 +78,25 @@ export default {
     cursor: pointer;
     .flip-card-front{
         img{
-        width: 100%;
+            width: 100%;
         height: 350px;
         }
-    }
-    .flip-card-back{
-        lang-flag{width: 32px; height: 24px; border: 1px solid gray;}
-        .Rate{
-        button{
-            margin: 0 !important;padding: 0 !important; cursor: initial !important;
-        }
-        svg.icon{margin: 0 2px !important;}
-        }
         h2{
-        background-color: $dark;
+            background-color: $dark;
         color: $danger;
         height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
+        }
+    }
+    .flip-card-back{
+        lang-flag{width: 32px; height: 24px; border: 1px solid gray;}
+        .Rate{
+            button{
+                margin: 0 !important;padding: 0 !important; cursor: initial !important;
+                    svg.icon{margin: 0 2px !important;}
+                }
         }
         .lang {font-size: 15px;}
         .overview p{font-size: 12px; text-align: justify;}
