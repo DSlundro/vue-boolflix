@@ -3,7 +3,7 @@
         <!-- CARD CONTAINER -->
         <div class="my-card flip-card">
             <!-- FLIPPING CARD SECTION -->
-            <div class="flip-card-inner">
+            <div class="flip-card-inner gradient-border">
                 <!-- FRONT CARD -->
                 <div class="flip-card-front">
                     <img v-if="movie.poster_path" :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
@@ -74,12 +74,18 @@ export default {
 </script>
 
 <style lang="scss">
+// CARD FLIPPING ANIMATION
+@import '@/assets/scss/partials/CardFlippingAnimation.scss';
+// CARD BORDER ANIMATION
+@import '@/assets/scss/partials/CardBorderAnimation.scss';
+
 .my-card{
     cursor: pointer;
     .flip-card-front{
+        border-radius: 10px !important;
         img{
             width: 100%;
-        height: 350px;
+            height: 350px;
         }
         h2{
             background-color: $dark;
@@ -91,6 +97,7 @@ export default {
         }
     }
     .flip-card-back{
+        border-radius: 10px;
         lang-flag{width: 32px; height: 24px; border: 1px solid gray;}
         .Rate{
             button{
@@ -106,35 +113,5 @@ export default {
     }
 }
 
-// FLIPPING CARD ANIMATION
-.flip-card {
-background-color: transparent;
-height: 350px;
-}
 
-.flip-card-inner {
-position: relative;
-width: 100%;
-height: 100%;
-transition: transform 0.8s;
-transform-style: preserve-3d;
-box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-}
-
-.flip-card:hover .flip-card-inner {
-transform: rotateY(180deg);
-}
-
-.flip-card-front, .flip-card-back {
-position: absolute;
-width: 100%;
-height: 100%;
-backface-visibility: hidden;
-}
-
-.flip-card-back {
-color: white;
-transform: rotateY(180deg);
-overflow-y: auto;
-}
 </style>
