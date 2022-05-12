@@ -7,7 +7,7 @@
                 <!-- FRONT CARD -->
                 <div class="flip-card-front">
                     <img v-if="movie.poster_path" :src="`https://image.tmdb.org/t/p/w342${movie.poster_path}`" >
-                    <h2 v-else class="">Missing image</h2>
+                    <h2 v-else class="glitch text-center">Image<br>is<br>Missing</h2>
                 </div>
 
                 <!-- BACK CARD -->
@@ -78,22 +78,25 @@ export default {
 @import '@/assets/scss/partials/CardFlippingAnimation.scss';
 // CARD BORDER ANIMATION
 @import '@/assets/scss/partials/CardBorderAnimation.scss';
+// CARD MISSING TEXT ANIMATION
+@import '@/assets/scss/partials/CardMissingTextAnimation.scss';
 
 .my-card{
     cursor: pointer;
     .flip-card-front{
-        border-radius: 10px !important;
         img{
             width: 100%;
             height: 350px;
+            border-radius: 10px;
         }
         h2{
+            font-size: 50px !important;
             background-color: $dark;
-        color: $danger;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+            color: $danger;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
     .flip-card-back{
@@ -112,6 +115,5 @@ export default {
         }
     }
 }
-
 
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <HeaderComponent />
+    <SliderComponent />
     <MainComponent />
   </div>
 </template>
