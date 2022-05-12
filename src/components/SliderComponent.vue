@@ -1,28 +1,25 @@
 <template>
-
-
-                <div class="row">
-                    <div class="img1 col-12">
-                        <div class="my_card">
-                            <img :src="objects[activeImage].image" :alt="'Image' + [activeImage].title" >
-                            <div class="text">
-                                <h3>{{objects[activeImage].title}}</h3>
-                                <small>{{objects[activeImage].text}}</small>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="img2 col-2" >
-                        
-                        <div class="thumbnails d-flex" @mouseenter="stop" @mouseleave="start"> 
-                            <img :src="objects[index].image" class="thumb" :class="activeImage === index ? 'active' : '' " 
-                            v-for="(image, index) in objects" :key="index" @click="activateImage(index)">
-                            <p>{{objects.title}}</p>
-                        </div>
-                        
-                    </div>
+    <div class="row">
+        <div class="img1 col-12">
+            <div class="my_card">
+                <img :src="objects[activeImage].image" :alt="'Image' + [activeImage].title" >
+                <div class="text">
+                    <h3>{{objects[activeImage].title}}</h3>
+                    <small>{{objects[activeImage].text}}</small>
                 </div>
+            </div>
+        </div>
 
+        <div class="img2 col-2" >
+            
+            <div class="thumbnails d-flex" @mouseenter="stop" @mouseleave="start"> 
+                <img :src="objects[index].image" class="thumb" :class="activeImage === index ? 'active' : '' " 
+                v-for="(image, index) in objects" :key="index" @click="activateImage(index)">
+                <p>{{objects.title}}</p>
+            </div>
+            
+        </div>
+    </div>
 
 </template>
 
