@@ -1,0 +1,11 @@
+.waviy span {
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    animation: waviy 1s infinite;
+    animation-delay: calc(.1s * var(--i));
+}
+@keyframes waviy {
+    0%,40%,100% {transform: translateY(0)}
+    20% {transform: translateY(-10px)}
+}
