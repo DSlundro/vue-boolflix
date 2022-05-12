@@ -3,10 +3,12 @@
         <div class="d-flex justify-content-end align-items-center p-fixed">
             <div class="input-group w-75">
                 <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" 
-                v-model="query"
-                @keyup.enter="callApi"/>
-                <button type="button" class="btn btn-danger" 
-                @click="callApi"
+                @input="$emit('input', $event.target.value)"
+                @keyup.enter="$emit('submitSearch')"/>
+
+                <button type="button" class="btn btn-danger"
+                @input="$emit('input', $event.target.value)"
+                @click="$emit('submitSearch')"
                 >Search</button>
             </div>
         </div>
@@ -14,9 +16,12 @@
 </template>
 
 <script>
+
 export default {
     name: 'SearchHeader',
-
+    props:{
+        query: String
+    }
 }
 </script>
 

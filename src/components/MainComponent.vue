@@ -17,7 +17,6 @@ export default {
     components:{
         CardMain,
     },
-
     computed:{
         all(){
             return state.all

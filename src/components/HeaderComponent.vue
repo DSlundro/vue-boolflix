@@ -3,7 +3,7 @@
         <div class="row align-items-center m-0 p-3 bg-dark">
             <LogoHeader />
             <MenuHeader />
-            <div class="col-4">
+            <!-- <div class="col-4">
                 <div class="d-flex justify-content-end align-items-center p-fixed">
                     <div class="input-group w-75">
                         <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" 
@@ -14,7 +14,8 @@
                         >Search</button>
                     </div>
                 </div>
-            </div>
+            </div> -->
+            <SearchHeader v-model="query" @submitSearch="callApi"/>
         </div>
     </header>
 </template>
@@ -25,6 +26,7 @@ import state from '@/state'
 
 import LogoHeader from '@/components/partials/LogoHeader.vue'
 import MenuHeader from '@/components/partials/MenuHeader.vue'
+import SearchHeader from '@/components/partials/SearchHeader.vue';
 
 
 export default {
@@ -32,6 +34,7 @@ export default {
     components: {
         LogoHeader,
         MenuHeader,
+        SearchHeader,
     },
     data(){
         return{
@@ -46,7 +49,6 @@ export default {
             all: [],
             loading: true,
             query: '',
-            genre: [],
         }
     },
     methods:{
